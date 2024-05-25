@@ -26,4 +26,7 @@ website i deploy with flask+gunicorn+nginx locally to stream videos etc.
 
 Place your videos in the `video` folder.
 
+## Note
+
+Content is german
 
