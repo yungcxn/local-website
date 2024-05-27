@@ -1,0 +1,1 @@
+cat /etc/nginx/nginx.conf > etc-nginx-nginx.conf
