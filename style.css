@@ -1,0 +1,53 @@
+/* center every text */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+* {
+  text-align: center;
+  background-color: #1E1E2E;
+  color: #CDD6F4;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  text-decoration: none;
+}
+
+a {
+  text-align: center;
+  padding: 10px;
+  font-size: 400%;
+  background-color: #91d7e3;
+  color: #1E1E2E;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+a:hover {
+  background-color: #b4befe;
+}
+
+span {
+  margin: 20px;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+span:hover {
+  transform: scale(1.1);
+}
+
+div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+div.container{
+  margin-right: 20%;
+  margin-left: 20%;
+}
+
+body {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+

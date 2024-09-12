@@ -7,21 +7,16 @@ app = Flask(__name__)
 import main
 import notfound
 import os
-import xspf
 
 URL = 'http://can.fritz.box'
 
-# get all files in /video
-FILES = [file for file in os.listdir('video') if not file.startswith('.')]
-
 @app.route('/')
 def index():
-  return main.content(FILES, '/xspf')
+  return main.main()
 
-@app.route('/xspf')
-def xspf_route():
-  return Response(xspf.content(FILES, URL), mimetype='application/xspf+xml')
-
+@app.route('/entry/<entryname>')
+def entry_view(entryname):
+    return main.entry(entryname)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -29,4 +24,4 @@ def page_not_found(e):
 
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0')
+  app.run(host='127.0.0.1', port=8080, debug=True)
