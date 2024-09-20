@@ -55,3 +55,13 @@ body {
   margin-bottom: 20px;
 }
 
+p { 
+  font-size: 150%;
+  margin: 10px;
+}
+
+input, label {
+  font-size: 200%;
+  padding: 10px;
+  margin: 10px;
+}

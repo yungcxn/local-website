@@ -1,6 +1,7 @@
 import os
 import random 
 
+
 def main():
   path = os.path.dirname(os.path.realpath(__file__))
   files = [file for file in os.listdir(path + '/video') if file.endswith('.mp4')]
@@ -9,7 +10,7 @@ def main():
   split_names = list(dict.fromkeys(split_names))
   split_names.sort()
   css = ""
-  with open('style.css', 'r') as file:
+  with open('static/style.css', 'r') as file:
     css = file.read()
 
   content = f"<style>{css}</style>"
@@ -23,6 +24,9 @@ def main():
   content += '<div class="container">'
   for name in split_names:
     content += f'<span><a href="/entry/{name}">{name}</a></span>'
+
+  # add /live link
+  content += f'<span><a href="/live">&#x1F534; LIVE</a></span>'
   content += '</div>'
   print(content)
   return content
@@ -37,7 +41,7 @@ def entry(name):
   # remove ".mp4"
   files = [file[:-4] for file in files]
   css = ""
-  with open('style.css', 'r') as file:
+  with open('static/style.css', 'r') as file:
     css = file.read()
 
   content = f"<style>{css}</style>"

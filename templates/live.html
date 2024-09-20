@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
+  <link rel="stylesheet" href="static/style.css">
+</head>
+<body style="margin:5%">
+    <div class="container">
+        <div style="display: inline-flex; flex-direction: column; align-items:center; justify-content: center;">
+            <h1>Can's Video-Liste (&#x1F534; LIVE)</h1>
+            <p id="videoname">death-note_1-01</p>
+            <video id="video" controls width="1000" crossorigin="anonymous" style="margin: 0 auto; display: block;">   
+                <source src="/video/death-note_1-01.mp4" type="video/mp4"/>  
+                <param name="allowfullscreen" value="true">
+                <param name="allowscriptaccess" value="always">
+                <param name="flashvars" value="file=video.mp4">
+            </video>
+            <form action="submitvideo" method="post">
+                <input type="text" name="url" id="input" placeholder="videoname?">
+            </form>
+        </div>
+        <br>
+        <br>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                var video = document.getElementById('video');
+                var input = document.getElementById('input');
+                var p = document.getElementById('videoname');
+
+                $('form').submit(function(e){
+                    e.preventDefault();
+                    var url = input.value;
+                    socket.emit('requestvideo', {'url': "/video/" + url + ".mp4"});
+                });
+
+
+                var userAction = true;
+                //var socket = io.connect('https://' + document.domain + ':' + location.port, {secure: true});
+
+                var socket = io("https://can.fritz.box",{
+                    //transports: ['websocket'],
+                    reconnection: true,
+                    reconnectionAttempts: Infinity,
+                    reconnectionDelay: 1000,
+                });
+
+                socket.on('connect', function() {
+                    socket.emit('join');
+                    console.log('Connected to the server');
+                });
+
+                socket.on("connect_error", (err) => {
+                  console.log("connect_error");
+                  console.log(err.message);
+                  console.log(err.description);
+                  console.log(err.context);
+                });
+
+                socket.on('disconnect', function() {
+                    console.log('Disconnected from the server');
+                });
+
+                $("video").on("pause", function (e) {
+                if (userAction === true && video.readyState === 4) {
+                        console.log("pause");
+                        socket.emit('pause', {'time': e.target.currentTime});
+                    }
+                });
+
+                $("video").on("play", function (e) {
+                    if (userAction === true) {
+                        console.log("play");
+                        socket.emit('play', {'time': e.target.currentTime});
+                    }
+                });
+                
+                socket.on('pause', function(msg){
+                    console.log("got pause")
+                    userAction=false;
+                    if (video.currentTime!==msg.time){
+                        video.currentTime=msg.time
+                    }
+                    video.pause()
+                    userAction=true
+                })
+
+                socket.on('play', function(msg){
+                    console.log("got play")
+                    userAction=false;
+                    if (video.currentTime!==msg.time){
+                        video.currentTime=msg.time
+                    }
+                    video.play()
+                    userAction=true
+                })
+
+                socket.on('giveMeTime',function(data){
+                    console.log("got giveMeTime")
+                    var PAUSED='F'
+                    if (video.paused){PAUSED='T'}
+                    socket.emit('syncWithTime',{'time':video.currentTime, 'paused':video.paused})
+                })
+
+                socket.on('syncWithTime',function(data){
+                    console.log("got syncWithTime")
+                    video.currentTime=data.time
+                    userAction=false
+                    if (data.paused===false){
+                        video.play()
+                    }
+                    userAction=true
+                })
+
+                socket.on('setvideo',function(data){
+                    console.log("got setvideo")
+                    console.log("Setting video source to:", data.url)
+                    video.src = data.url
+                    video.currentTime=0
+                    video.play()
+                    p.innerHTML = data.url.split("/")[2].split(".")[0]
+                })
+
+            });
+
+
+        </script>
+    </div>
+</body>
+</html>
