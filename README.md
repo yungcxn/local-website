@@ -10,11 +10,7 @@ website i deploy with flask+gunicorn+nginx locally to stream videos etc.
 - `gunicorn`
 - `nginx`
 
-2. Download python-dependencies via pip:
-
-- `dotenv`
-- `flask`
-
+2. Download python-dependencies via pip from `requirements.txt`
 3. run `setup-keys.sh`
 
 4. copy `etc-nginx-nginx.conf` to `etc/nginx/nginx.conf`
