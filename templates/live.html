@@ -9,9 +9,9 @@
     <div class="container">
         <div style="display: inline-flex; flex-direction: column; align-items:center; justify-content: center;">
             <h1>Can's Video-Liste (&#x1F534; LIVE)</h1>
-            <p id="videoname">death-note_1-01</p>
+            <p id="videoname">{{ currentname }}</p>
             <video id="video" controls width="1000" crossorigin="anonymous" style="margin: 0 auto; display: block;">   
-                <source src="/video/death-note_1-01.mp4" type="video/mp4"/>  
+                <source src="{{ currentvideo }}" type="video/mp4">
                 <param name="allowfullscreen" value="true">
                 <param name="allowscriptaccess" value="always">
                 <param name="flashvars" value="file=video.mp4">
@@ -117,8 +117,8 @@
                     console.log("Setting video source to:", data.url)
                     video.src = data.url
                     video.currentTime=0
-                    video.play()
                     p.innerHTML = data.url.split("/")[2].split(".")[0]
+                    video.play()
                 })
 
             });

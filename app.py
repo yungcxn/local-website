@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
 from flask_socketio import SocketIO, emit
 import main
 import notfound
@@ -21,12 +21,23 @@ def index():
 def entry_view(entryname):
     return main.entry(entryname)
 
+# redirect to /roms/
+@app.route('/roms')
+def roms():
+    return redirect('/roms/')
+
+# redirect to /pdf/
+@app.route('/pdf')
+def pdf():
+    return redirect('/pdf/')
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return notfound.content()
 
 
-currentvideo = ""
+currentvideo = "/video/death-note_1-01.mp4"
 
 def setvideo(url):
     global currentvideo
@@ -70,7 +81,8 @@ def pause(data):
 
 @app.route('/live')
 def live():
-    return render_template('live.html')
+    global currentvideo
+    return render_template('live.html', currentvideo=currentvideo, currentname=currentvideo.split('/')[-1].split('.')[0])
 
 if __name__ == '__main__':
     context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)

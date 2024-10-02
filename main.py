@@ -27,6 +27,8 @@ def main():
 
   # add /live link
   content += f'<span><a href="/live">&#x1F534; LIVE</a></span>'
+  content += f'<span><a href="/roms">ROMS</a></span>'
+  content += f'<span><a href="/pdf">PDFs</a></span>'
   content += '</div>'
   print(content)
   return content
